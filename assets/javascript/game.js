@@ -9,17 +9,15 @@ var guesses = 10;
 
 // This function produces a random letter for the computer
 
-// escape = 27
-
 var computerGuess = String.fromCharCode(97 + Math.round(Math.random() * 25));
 
 // This function displays the variables in the HTML prior to onkeyup.function.
 
 function updateDom() {
+    document.querySelector("#letters").innerHTML = letters;
     document.querySelector("#wins").innerHTML = wins;
     document.querySelector("#losses").innerHTML = losses;
     document.querySelector("#guesses").innerHTML = guesses;
-    document.querySelector("#letters").innerHTML = letters;
 }
 
 updateDom();
@@ -27,8 +25,18 @@ updateDom();
 // This function resets the variables when the user wins
 
 function reset() {
-    guesses = 10;
     letters = [];
+    guesses = 10;
+    computerGuess = String.fromCharCode(97 + Math.round(Math.random() * 25));
+}
+
+// This function resets the variables when the user presses <space>;
+
+function resetAll() {
+    letters = [];
+    wins = 0;
+    losses = 0;
+    guesses = 10;
     computerGuess = String.fromCharCode(97 + Math.round(Math.random() * 25));
 }
 
@@ -39,21 +47,22 @@ document.onkeyup = function(event) {
     var userGuess = event.key;
 
 
-    // Tracks wins, losses, guesses left, and total guesses
+    // Tracks wins, losses and guesses left
 
-
-    if (userGuess === computerGuess) {
+    if (event.keyCode === 32) {
+        resetAll();
+    } else if (userGuess === computerGuess) {
         wins++;
         reset();
     } else if ((userGuess !== computerGuess) && (guesses === 0)) {
         losses++;
         reset();
+        } else {
+            guesses--;
+        }
 
-    } else {
-        guesses--;
-    }
 
-    //This function updates the record of userGuess
+    //This function adds to the array for userGuess
 
     letters.push(userGuess);
 
